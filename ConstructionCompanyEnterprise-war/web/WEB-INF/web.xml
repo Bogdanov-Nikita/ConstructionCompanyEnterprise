@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <servlet>
+        <servlet-name>AuthenticationServlet</servlet-name>
+        <servlet-class>server.AuthenticationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AuthenticationServlet</servlet-name>
+        <url-pattern>/user/*</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+    <security-constraint>
+        <display-name>Manager</display-name>
+        <web-resource-collection>
+            <web-resource-name>manager</web-resource-name>
+            <description>for managers</description>
+            <url-pattern>/manager/*</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>manager_api</web-resource-name>
+            <description>api for managers</description>
+            <url-pattern>/manager/api/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>Manager</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>Master</display-name>
+        <web-resource-collection>
+            <web-resource-name>master</web-resource-name>
+            <description>for masters</description>
+            <url-pattern>/master/*</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>master_api</web-resource-name>
+            <description>api for masters</description>
+            <url-pattern>/api/master/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>Master</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>Client</display-name>
+        <web-resource-collection>
+            <web-resource-name>client</web-resource-name>
+            <description>for clients</description>
+            <url-pattern>/client/*</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>client_api</web-resource-name>
+            <description>api for clients</description>
+            <url-pattern>/api/client/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>Client</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>ConstructionCompany</realm-name>
+        <form-login-config>
+            <form-login-page>/login.html</form-login-page>
+            <form-error-page>/error.html</form-error-page>
+        </form-login-config>
+    </login-config>
+    <security-role>
+        <description>Construction company manager</description>
+        <role-name>Manager</role-name>
+    </security-role>
+    <security-role>
+        <description>Master of workers, set work's list and progress</description>
+        <role-name>Master</role-name>
+    </security-role>
+    <security-role>
+        <description>Client, set Order</description>
+        <role-name>Client</role-name>
+    </security-role>
+</web-app>

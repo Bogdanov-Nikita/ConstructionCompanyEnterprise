@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Менежер</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../js/bootstrap.min.js"></script>
+        <!-- Bootstrap core CSS -->
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <!-- Bootstrap theme -->
+        <link href="../css/bootstrap-theme.min.css" rel="stylesheet">
+        <!-- Custom styles for this template -->
+        <link href="../css/theme.css" rel="stylesheet">
+        <link href="../css/dialog.css" rel="stylesheet">
+        <!-- Angular -->
+        <script src="../js/angular.min.js"></script>
+        <!-- Client -->
+        <script src="../js/manager.js"></script>
+    </head>
+    <body ng-app="Manager" ng-controller="MainController">
+        <!--GUI: activate visible reaction if click order or profile-->
+        <script>
+            function clicSwitch(index) {    
+                    document.getElementById("order").removeAttribute("class");
+                    document.getElementById("work").removeAttribute("class");
+                    document.getElementById("resource").removeAttribute("class");
+                    document.getElementById("storage").removeAttribute("class");
+                    document.getElementById("client").removeAttribute("class");
+                    document.getElementById("master").removeAttribute("class");
+                    document.getElementById("profile").removeAttribute("class");
+
+                    switch(index){
+                        case 1: document.getElementById("order").setAttribute("class","active"); break;
+                        case 2: document.getElementById("work").setAttribute("class","active"); break;
+                        case 3: document.getElementById("resource").setAttribute("class","active"); break;
+                        case 4: document.getElementById("storage").setAttribute("class","active"); break;
+                        case 5: document.getElementById("client").setAttribute("class","active"); break;
+                        case 6: document.getElementById("master").setAttribute("class","active"); break;
+                        case 7: document.getElementById("profile").setAttribute("class","active"); break;
+                    }
+            };
+        </script>
+        
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" onclick="clicWork(1)" href="./">{{managerData.login}}</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li id = "order" class="active"><a onclick="clicSwitch(1)" href="#orders">Заказы</a></li>
+                        <li id = "work"><a onclick="clicSwitch(2)" href="#works">Работы</a></li>
+                        <li id = "resource"><a onclick="clicSwitch(3)" href="#resources">Ресурсы</a></li>
+                        <li id = "storage"><a onclick="clicSwitch(4)" href="#storages">Склад</a></li>
+                        <li id = "client"><a onclick="clicSwitch(5)" href="#clients">Заказчики</a></li>
+                        <li id = "master"><a onclick="clicSwitch(6)" href="#masters">Прорабы</a></li>
+                        <li id ="profile"><a onclick="clicSwitch(7)" href="#profiles">Профиль</a></li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </nav>
+        
+        <!--Main-->
+        <div class="container theme-showcase" role="main">
+            <!-- Tabs -->
+            <div id="orders" class="order">
+                <h1>Заказы</h1>
+                <h5 class="manager-data">Общая таблица заказов</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>  
+                            <th>Номер</th>
+                            <th>Статус</th>
+                            <th>Стимость $</th>
+                            <th>Дата создания</th>
+                            <th>Дата изменения</th>                    
+                            <th>Дата закрытия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-attr-id ="{{'orderTable-' + $index}}"
+                            ng-repeat="order in managerData.orders"
+                            ng-mouseover="mouseOverTableItem('orderTable-' + $index)" 
+                            ng-mouseleave = "mouseLeaveTableItem('orderTable-' + $index)">
+                                <td>{{$index+1}}</td> 
+                                <td><a href="{{'#order-' + $index}}">{{order.number}}</a></td>
+                                <td>{{order.status}}</td>
+                                <td>{{order.coast | currency}}</td>
+                                <td>{{order.create}}</td>
+                                <td>{{order.update}}</td>                    
+                                <td>{{order.end}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <!--orders list-->
+                <div class="list-group">
+                    <div ng-init="orderIndex = $index" 
+                         ng-attr-id ="{{'order-' + $index}}"
+                         ng-repeat="order in managerData.orders"  
+                         class="list-group-item order-item">
+                        <div class="list-group-item-heading">
+                            <h3>Заказ №{{order.number}}
+                                <span class="label label-primary item-right">{{order.status}}</span>
+                            </h3><br>
+                            <div class="item-right-manager">
+                                <h4>Стоимость: {{order.coast | currency}}</h4>
+                                <h5>Дата создания: <span>{{order.create}}</span></h5>
+                                <h5>Дата последнего изменения <span>{{order.update}}</span></h5>
+                                <h5>Дата завершения <span>{{order.end}}</span></h5>
+                                <div class="item-padding">  
+                                    <h4>Заказчик: {{order.clientname}}</h4>
+                                    <table>
+                                        <tr>
+                                            <td>телефон:</td>
+                                            <td class="manager-data" >{{order.clientphone}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>адрес: </td>
+                                            <td class="manager-data">{{order.clientaddress}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item-text">
+                            <div class="list-group">
+                                <div ng-init="estimateIndex = $index"
+                                     ng-attr-id="{{'order-' + orderIndex + '-estimate-' + $index}}"
+                                     ng-repeat="estimate in order.estimates" 
+                                     class="list-group-item">
+                                    <h4 class="list-group-item-heading">Смета № {{$index+1}}
+                                        <span class="label label-primary item-right">{{estimate.status}}</span>
+                                         {{estimate.type}}
+                                    </h4>
+                                    <!-- кнопка нужна но для других функций и при других условиях
+                                    <button ng-hide="compareStatus(estimate.status)" 
+                                            type="button"
+                                            ng-click="payEstimate(orderIndex,estimateIndex)"
+                                            class="btn btn-default navbar-btn item-right">Оплатить
+                                    </button>-->
+                                    <div class="list-group-item-text">
+                                        <h4>{{estimate.coastCalculation | currency}}</h4>
+                                        <div class="list-group">
+                                            <div ng-init="workIndex = $index"
+                                                 ng-attr-id="{{'order-' + orderIndex + '-estimate-' + estimateIndex + '-work-' + $index}}"
+                                                 ng-repeat="work in estimate.works" 
+                                                 class="list-group-item">
+                                                <h4 class="list-group-item-heading">Работа: {{work.description}}
+                                                    <span class="label label-primary item-right">{{work.status}}</span>
+                                                </h4>
+                                                
+                                                <div class="list-group-item-text">
+                                                    <h4>{{work.coastCalculation | currency}}</h4>
+                                                    <h5>стоимость без ресурсов: {{work.serviceCoast | currency}}</h5>
+
+                                                    <!--таблица-->
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Количество</th>
+                                                                <th>Стоимость</th>
+                                                                <th>Код товара</th>
+                                                                <th>Название ресурса</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-init="resourcesIndex = $index"
+                                                                ng-attr-id="{{'order-' + orderIndex + '-estimate-' + estimateIndex + '-work-' + workIndex + '-resource-' + $index}}" 
+                                                                ng-repeat="resource in work.resources"
+                                                                ng-mouseover="mouseOverTableItem('order-' + orderIndex + '-estimate-' + estimateIndex + '-work-' + workIndex + '-resource-' + $index)" 
+                                                                ng-mouseleave = "mouseLeaveTableItem('order-' + orderIndex + '-estimate-' + estimateIndex + '-work-' + workIndex + '-resource-' + $index)">
+                                                                <td>{{resourcesIndex+1}}</td>
+                                                                <td>{{resource.amount}}</td>
+                                                                <td>{{resource.coast | currency}}</td>
+                                                                <td>{{resource.productCode}}</td>
+                                                                <td>{{resource.name}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!--Works-->
+            <div id="works" class="work">
+                <h1>Работы</h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>  
+                            <th>Описание</th>
+                            <th>Стимость</th>
+                            <th colspan="2">Стоимость с ресурсами</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-attr-id ="{{'workTable-' + $index}}"
+                            ng-repeat="work in managerData.works"
+                            ng-mouseover="mouseOverTableItem('workTable-' + $index)" 
+                            ng-mouseleave = "mouseLeaveTableItem('workTable-' + $index)">
+                            <td>{{$index+1}}</td> 
+                            <td>{{work.description}}</td>
+                            <td>{{work.serviceCoast | currency}}</td>
+                            <td>{{work.coastCalculation | currency}}</td>
+                            <td>
+                                <div class="button-right">
+                                    <button type="button" 
+                                            ng-click="editWork($index)" 
+                                            class="btn btn-default navbar-btn">Изменить
+                                    </button>
+                                    <button type="button" 
+                                            ng-click="deleteWork($index)" 
+                                            class="btn btn-default navbar-btn">Удалить
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="resources" class="resource">
+                <h1>Ресурсы</h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>  
+                            <th>Количество</th>
+                            <th>Стоимость</th>
+                            <th>Код товара</th>
+                            <th>Относится к</th>
+                            <th colspan="2">Название ресурса</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-attr-id ="{{'resourceTable-' + $index}}"
+                            ng-repeat="resource in managerData.resources"
+                            ng-mouseover="mouseOverTableItem('resourceTable-' + $index)" 
+                            ng-mouseleave = "mouseLeaveTableItem('resourceTable-' + $index)">
+                            <td>{{$index+1}}</td>
+                            <td>{{resource.amount}}</td>
+                            <td>{{resource.coast | currency}}</td>
+                            <td>{{resource.productCode}}</td>
+                            <td>{{resource.refer}}</td>
+                            <td>{{resource.name}}</td>
+                            <td>
+                                <div class="button-right">
+                                    <button type="button" 
+                                            ng-click="editResource($index)" 
+                                            class="btn btn-default navbar-btn">Изменить
+                                    </button>
+                                    <button type="button" 
+                                            ng-click="deleteResource($index)" 
+                                            class="btn btn-default navbar-btn">Удалить
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!--Storages-->
+            <div id="storages" class="storage">
+                <h1>Склад</h1>
+                <div class="list-group">
+                    <div ng-init="storegesIndex = $index"
+                         ng-attr-id="{{'storage-' + $index}}"
+                         ng-repeat="storege in managerData.storages"  
+                         class="list-group-item order-item">
+                        <div class="list-group-item-heading">
+                            <h3>{{storege.location}}</h3>
+                        </div>
+                        <div class="list-group-item-text">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Количество</th>
+                                        <th>Стоимость</th>
+                                        <th>Код товара</th>
+                                        <th colspan="2">Название ресурса</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-init="resourcesIndex = $index"
+                                        ng-attr-id="{{'storage-' + storegesIndex + '-resource-' + $index}}"
+                                        ng-repeat="resource in storege.resources"
+                                        ng-mouseover="mouseOverTableItem('storage-' + storegesIndex + '-resource-' + $index)" 
+                                        ng-mouseleave = "mouseLeaveTableItem('storage-' + storegesIndex + '-resource-' + $index)">
+                                        <td>{{resourcesIndex+1}}</td>
+                                        <td>{{resource.amount}}</td>
+                                        <td>{{resource.coast | currency}}</td>
+                                        <td>{{resource.productCode}}</td>
+                                        <td>{{resource.name}}</td>
+                                        <td>
+                                              <div class="button-right">
+                                                  <button type="button" 
+                                                          ng-click="editResource(storegesIndex,resourcesIndex)" 
+                                                          class="btn btn-default navbar-btn">Изменить
+                                                  </button>
+                                                  <button type="button" 
+                                                          ng-click="deleteResource(storegesIndex,resourcesIndex)" 
+                                                          class="btn btn-default navbar-btn">Удалить
+                                                  </button>
+                                              </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!--Clients-->
+            <div id="clients" class="client">
+                <h1>Заказчики</h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                          <th>#</th>  
+                          <th>Ф.И.О.</th>
+                          <th>Телефон</th>
+                          <th>Адрес</th>
+                          <th colspan="2">Тип</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-init="clientsIndex = $index"
+                            ng-attr-id="{{'client-' + $index}}"
+                            ng-repeat="client in managerData.clients"
+                            ng-mouseover="mouseOverTableItem('client-' + $index)" 
+                            ng-mouseleave = "mouseLeaveTableItem('client-' + $index)">
+                            <td>{{$index+1}}</td>  
+                            <td>{{client.name}}</td>
+                            <td>{{client.phone}}</td>
+                            <td>{{client.address}}</td>
+                            <td>{{client.type}}</td>
+                            <td>
+                                <div class="button-right">
+                                    <button type="button" 
+                                            ng-click="editClient(clientsIndex)" 
+                                            class="btn btn-default navbar-btn">Изменить
+                                    </button>
+                                    <button type="button" 
+                                            ng-click="deleteClient(clientsIndex)" 
+                                            class="btn btn-default navbar-btn">Удалить
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="button" 
+                        ng-click="addClient()" 
+                        class="btn btn-default navbar-btn">Добавить
+                </button>
+            </div>
+            
+            <!--Masters-->
+            <div id="masters" class="master">
+                <h1>Прорабы</h1>      
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>  
+                            <th>Ф.И.О.</th>
+                            <th colspan="2">Телефон</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-init="mastersIndex = $index"
+                            ng-attr-id="{{'master-' + $index}}"
+                            ng-repeat="master in managerData.masters" 
+                            ng-mouseover="mouseOverTableItem('master-' + $index)" 
+                            ng-mouseleave = "mouseLeaveTableItem('master-' + $index)">
+                            <td>{{$index+1}}</td>  
+                            <td>{{master.name}}</td>
+                            <td>{{master.phone}}</td>
+                            <td>
+                                <div class="button-right">
+                                    <button type="button" 
+                                            ng-click="editMaster(mastersIndex)" 
+                                            class="btn btn-default navbar-btn">Изменить
+                                    </button>
+                                    <button type="button" 
+                                            ng-click="deleteMaster(mastersIndex)" 
+                                            class="btn btn-default navbar-btn">Удалить
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="button" 
+                        ng-click="addMaster()" 
+                        class="btn btn-default navbar-btn">Добавить
+                </button>
+            </div>
+            
+            <!-- Profile -->
+            <div id="profiles" class="profile">
+                <h1>Профиль</h1>
+                <div class="input-group input-group-lg item">
+                    <span class="input-group-addon" id="sizing-addon1">Ф.И.О.</span>
+                    <input id="managername" type="text" class="form-control" value="{{managerData.name}}" aria-describedby="sizing-addon1">
+                </div>
+                <div class="input-group input-group-lg item">
+                    <span class="input-group-addon" id="sizing-addon2">телефон</span>
+                    <input id="managerphone" type="text" class="form-control" value="{{managerData.phone}}" aria-describedby="sizing-addon2">
+                </div>
+                <div class="input-group input-group-lg item">
+                    <span class="input-group-addon" id="sizing-addon3">адрес офиса</span>
+                    <input id="manageraddress" type="text" class="form-control" value="{{managerData.address}}" aria-describedby="sizing-addon3">
+                </div>
+                <button type="button" 
+                        ng-click="onClickSaveProfile()" 
+                        class="btn btn-default navbar-btn">Сохранить
+                </button>
+            </div>
+                       
+            <!-- The Modal Client Add/Edit Dialog -->
+            <div id="clientDialog" class="modal">
+                <!-- content -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close" 
+                              ng-click="closer()">&times;</span>
+                        <h2 id="clientTitle">Редактировать</h2>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group input-group-lg item">
+                            <span class="input-group-addon" id="sizing-addon4">Ф.И.О.</span>
+                            <input id="clientname" 
+                                   type="text" 
+                                   class="form-control" 
+                                   value="{{managerData.name}}" aria-describedby="sizing-addon4">
+                        </div>
+                        <div class="input-group input-group-lg item">
+                            <span class="input-group-addon" id="sizing-addon5">телефон</span>
+                            <input id="clientphone" 
+                                   type="text" 
+                                   class="form-control" 
+                                   value="{{managerData.phone}}" 
+                                   aria-describedby="sizing-addon5">
+                        </div>
+                        <div class="input-group input-group-lg item">
+                            <span class="input-group-addon" id="sizing-addon6">адрес офиса</span>
+                            <input id="clientaddress" 
+                                   type="text" 
+                                   class="form-control" 
+                                   value="{{managerData.address}}" 
+                                   aria-describedby="sizing-addon6">
+                        </div>
+                        
+                        <select id="clientype" class="btn btn-default">
+                            <option value="физический">физический</option>
+                            <option value="юридический">юридический</option>
+                        </select>   
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button"
+                                class="btn btn-success"
+                                ng-click="clientAddEdit()">Сохранить
+                        </button>
+                        <button type="button"
+                                class="btn btn-default"
+                                ng-click="closer()">Отмена
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <!-- The Modal Master Add/Edit Dialog -->
+            <div id="masterDialog" class="modal">
+                <!-- content -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close" 
+                              ng-click="closer()">&times;</span>
+                        <h2 id="masterTitle">Редактировать</h2>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group input-group-lg item">
+                            <span class="input-group-addon" id="sizing-addon7">Ф.И.О.</span>
+                            <input id="mastername" 
+                                   type="text" 
+                                   class="form-control" 
+                                   value="{{managerData.name}}" aria-describedby="sizing-addon7">
+                        </div>
+                        <div class="input-group input-group-lg item">
+                            <span class="input-group-addon" id="sizing-addon8">телефон</span>
+                            <input id="masterphone" 
+                                   type="text" 
+                                   class="form-control" 
+                                   value="{{managerData.phone}}" 
+                                   aria-describedby="sizing-addon8">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button"
+                                class="btn btn-success"
+                                ng-click="masterAddEdit()">Сохранить
+                        </button>
+                        <button type="button"
+                                class="btn btn-default"
+                                ng-click="closer()">Отмена
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+    </body>
+</html>

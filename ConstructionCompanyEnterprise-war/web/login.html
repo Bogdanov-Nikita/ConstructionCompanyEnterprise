@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Авторизация</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="./js/bootstrap.min.js"></script>
+        <!-- Bootstrap core CSS -->
+        <link href="./css/bootstrap.min.css" rel="stylesheet">
+        <!-- Custom styles for this template -->
+        <link href="./css/signin.css" rel="stylesheet">
+        
+    </head>
+    
+    <body>
+        <!-- Main -->
+        <div class="container">
+            <form class="form-signin" action="j_security_check" method="post"><br>
+                <h2 class="form-signin-heading">Авторизация</h2>
+                <label for="inputLogin" class="sr-only">Логин</label>
+                <input name="j_username" type="text" id="inputLogin" class="form-control" placeholder="Логин" required autofocus><br> 
+                <label for="inputPassword" class="sr-only">Пароль</label>
+                <input name="j_password" type="password" id="inputPassword" class="form-control" placeholder="Пароль" required>  
+                <input type="submit" class="btn btn-lg btn-primary btn-block" value="вход">
+                <div class="backbtn">
+                    <label>
+                        <a class="btn btn-sm btn-default" href="./">обратно</a>
+                    </label>
+                </div>                    
+            </form>
+        </div>
+    </body>
+</html>

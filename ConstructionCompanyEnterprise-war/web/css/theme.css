@@ -1,0 +1,104 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Nov 23, 2016, 2:41:54 PM
+    Author     : nik
+*/
+
+body {
+  padding-top: 70px;
+  padding-bottom: 30px;
+  background-color: #F0F0F0;
+}
+
+.theme-dropdown .dropdown-menu {
+  position: static;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.theme-showcase > p > .btn {
+  margin: 5px 0;
+}
+
+.theme-showcase .navbar .container {
+  width: auto;
+}
+
+/*TODO стоит посмотреть на изменения ()упразднения) .item и .manager-data*/
+
+.item{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.manager-data{
+    padding-left: 20px;    
+}
+
+.mouseover{
+    background-color: #EEEEEE;
+    /*color:  white;*/
+}
+
+.item-right{
+    float: right;
+    font-family: monospace;
+}
+
+.item-right-manager > h5 span{
+    float: right;
+    font-family: monospace;
+}
+
+.button-right{
+    float: right;
+}
+
+.item-padding{
+    line-height: 1.4;
+    width: auto;
+    background-color: #fff;
+    padding: 8px 12px;
+    border-left: 4px solid #4CAF50;
+    margin: 20px 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.list-group-item{
+    padding-top:    20px;
+    padding-left:   20px;
+    margin: 20px 0;
+    border: 0px;
+}
+
+.list-group-item > div .list-group-item{
+    padding: 8px 12px;
+    border-left: 4px solid #673AB7;
+    margin: 20px 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.list-group-item > div .list-group-item div .list-group-item{
+    border-left: 0px;
+    padding-top: 20px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.order, .work, .resource, .storage, .client, .master, .profile{
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.work, .resource, .storage, .client, .master{
+    margin: 20px 0;
+}
+
+.order > h1{
+    padding-left: 20px;
+}
+
